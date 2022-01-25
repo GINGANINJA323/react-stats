@@ -3,7 +3,7 @@ import * as React from 'react';
 const App = (): JSX.Element => {
   return (
     <>
-      <p>{'Welcome to stats!'}</p>
+      <h1>{'Welcome to React Stats!'}</h1>
     </>
   );
 }

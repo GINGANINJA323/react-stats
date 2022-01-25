@@ -22,6 +22,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(require("react"));
 const App = () => {
     return (React.createElement(React.Fragment, null,
-        React.createElement("p", null, 'Welcome to stats!')));
+        React.createElement("h1", null, 'Welcome to React Stats!')));
 };
 exports.default = App;
