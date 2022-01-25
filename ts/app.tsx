@@ -1,4 +1,5 @@
 import * as React from 'react';
+import DataDisplay from './components/data-display';
 import type { Stats } from './utils/types';
 
 const App = (): JSX.Element => {
@@ -27,12 +28,7 @@ const App = (): JSX.Element => {
       <h2>{'System Info:'}</h2>
       {
         Object.keys(stats).length ?
-          (
-            <>
-              <p>{`Platform: ${stats.cpu_platform}.`}</p>
-              <p>{`CPU core count: ${stats.core_count}.`}</p>
-            </>
-          ) : null
+          <DataDisplay data={stats} /> : null
       }
     </>
   );

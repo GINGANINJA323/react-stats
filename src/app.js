@@ -27,8 +27,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(require("react"));
+const data_display_1 = __importDefault(require("./components/data-display"));
 const App = () => {
     const [stats, setStats] = React.useState({});
     const getStats = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -49,8 +53,6 @@ const App = () => {
         React.createElement("h1", null, 'Welcome to React Stats!'),
         React.createElement("h2", null, 'System Info:'),
         Object.keys(stats).length ?
-            (React.createElement(React.Fragment, null,
-                React.createElement("p", null, `Platform: ${stats.cpu_platform}.`),
-                React.createElement("p", null, `CPU core count: ${stats.core_count}.`))) : null));
+            React.createElement(data_display_1.default, { data: stats }) : null));
 };
 exports.default = App;
