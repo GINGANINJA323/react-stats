@@ -27,20 +27,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __importStar(require("react"));
-const axios_1 = __importDefault(require("axios"));
 const App = () => {
+    const [stats, setStats] = React.useState({});
     const getStats = () => __awaiter(void 0, void 0, void 0, function* () {
-        return axios_1.default.get('http://localhost:3000/get_stats')
-            .then((response) => console.log('Data: ', response))
-            .catch((error) => console.log('Error: ', error));
+        const response = yield fetch('http://localhost:3000/get_stats');
+        if (response.ok) {
+            const data = yield response.json();
+            setStats(data);
+        }
+        else {
+            console.log('Error fetching stats');
+        }
+        setTimeout(() => getStats(), 60000);
     });
+    React.useEffect(() => {
+        getStats();
+    }, []);
     return (React.createElement(React.Fragment, null,
         React.createElement("h1", null, 'Welcome to React Stats!'),
-        React.createElement("button", { onClick: () => getStats() }, 'Call API!')));
+        React.createElement("h2", null, 'System Info:'),
+        Object.keys(stats).length ?
+            (React.createElement(React.Fragment, null,
+                React.createElement("p", null, `Platform: ${stats.cpu_platform}.`),
+                React.createElement("p", null, `CPU core count: ${stats.core_count}.`))) : null));
 };
 exports.default = App;
