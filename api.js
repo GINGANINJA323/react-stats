@@ -1,15 +1,16 @@
-const os = require('os-utils');
+const osu = require('node-os-utils');
+const cpu = osu.cpu;
+const ram = osu.mem;
+const os = osu.os;
 
-const getStats = () => {
+const getStats = async() => {
   const stats = {};
 
-  stats.cpu_platform = os.platform();
-  stats.core_count = os.cpuCount();
-  stats.totalmem = os.totalmem();
-  stats.freemem = os.freemem();
-  stats.uptime = os.sysUptime();
-
-  os.cpuUsage((usage) => stats.usage = usage);
+  stats.cpu_platform = cpu.model();
+  stats.core_count = cpu.count();
+  stats.freemem = await ram.free();
+  stats.uptime = os.uptime();
+  stats.usage = await cpu.usage();
 
   return stats;
 }

@@ -9,7 +9,8 @@ const server = express();
 server.use(cors()); // Fix CORS error denying access to API responses.
 
 server.get('/get_stats', async(_req, res) => {
-  const data = api.getStats();
+  const data = await api.getStats();
+  console.log('API returned: ', data);
   res.json(data);
 });
 

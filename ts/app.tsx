@@ -10,6 +10,7 @@ const App = (): JSX.Element => {
 
     if (response.ok) {
       const data = await response.json();
+      console.log('Stats: ', data);
       setStats(data);
     } else {
       console.log('Error fetching stats');
