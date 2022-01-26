@@ -10,6 +10,9 @@ const DataDisplay = ({ data }: Props): JSX.Element => {
     <>
       <p>{`Platform: ${data.cpu_platform}.`}</p>
       <p>{`CPU core count: ${data.core_count}.`}</p>
+      <p>{`CPU usage: ${data.usage}.`}</p>
+      <p>{`RAM: ${data.freemem}/${data.totalmem}.`}</p>
+      <p>{`Server uptime: ${data.uptime}.`}</p>
     </>
   );
 }
