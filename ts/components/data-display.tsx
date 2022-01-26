@@ -9,37 +9,37 @@ interface Props {
 
 const DataContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-around;
   grid-column: 2;
   grid-row: 2;
 `;
 
 const Row = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  flex-direction: column;
 `;
 
 const DataDisplay = ({ data }: Props): JSX.Element => {
   return (
     <DataContainer>
+      <ReactSpeedometer
+        minValue={0}
+        maxValue={100}
+        value={data.usage}
+        currentValueText={`CPU Usage: ${data.usage}%`}
+      />
       <Row>
-        <ReactSpeedometer
-          minValue={0}
-          maxValue={100}
-          value={data.usage}
-          currentValueText={`CPU Usage: ${data.usage}%`}
-        />
-        <ReactSpeedometer
-          minValue={0}
-          maxValue={data.freemem?.totalMemMb}
-          value={data.freemem?.freeMemMb}
-          currentValueText={`RAM Usage: ${data.freemem?.freeMemMb}.`}
-        />
+        <p>{`CPU Model: ${data.cpu_platform}.`}</p>
+        <p>{`CPU core count: ${data.core_count}.`}</p>
+        <p>{`Server uptime: ${data.uptime}.`}</p>
       </Row>
-      <p>{`CPU Model: ${data.cpu_platform}.`}</p>
-      <p>{`CPU core count: ${data.core_count}.`}</p>
-      <p>{`Server uptime: ${data.uptime}.`}</p>
+      <ReactSpeedometer
+        minValue={0}
+        maxValue={data.freemem?.totalMemMb}
+        value={data.freemem?.freeMemMb}
+        currentValueText={`RAM Usage: ${data.freemem?.freeMemMb}.`}
+      />
     </DataContainer>
   );
 }

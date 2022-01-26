@@ -6,10 +6,12 @@ import type { Stats } from './utils/types';
 const ContainerDiv = styled.div`
   display: grid;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   grid-template-columns: 5% auto 5%;
   font-family: 'Titillium Web', sans-serif;
   font-weight: 400;
+  background-color: #1A1A1A;
+  color: #FFFFFF;
 
   h1 {
     font-family: 'Titillium Web', sans-serif;
@@ -23,6 +25,19 @@ const HeaderRow = styled.div`
   grid-row: 1;
   grid-column: 2;
   flex-direction: column;
+`;
+
+const FooterRow = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  grid-column: 2;
+  grid-row: auto;
+`;
+
+const Loading = styled.h2`
+  grid-row: 2;
+  grid-column: 2;
 `;
 
 const App = (): JSX.Element => {
@@ -53,8 +68,12 @@ const App = (): JSX.Element => {
       </HeaderRow>
       {
         Object.keys(stats).length ?
-          <DataDisplay data={stats} /> : null
+          <DataDisplay data={stats} /> : <Loading>Content Loading...</Loading>
       }
+      <FooterRow>
+        <p>Created using <a target="_blank" rel="noopener noreferrer" href="https://reactjs.org/">ReactJS</a> and <a target="_blank" rel="noopener noreferrer" href="https://www.typescriptlang.org/">TypeScript</a>.</p>
+        <p>Wanna see the code? My repo's <a target="_blank" rel="noopener noreferrer" href="https://github.com/GINGANINJA323/react-stats">here</a>.</p>
+      </FooterRow>
     </ContainerDiv>
   );
 };
