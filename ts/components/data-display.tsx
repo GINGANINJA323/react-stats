@@ -21,6 +21,29 @@ const Row = styled.div`
 `;
 
 const DataDisplay = ({ data }: Props): JSX.Element => {
+  const memoryInUse = Math.round(data.freemem.totalMemMb) - Math.round(data.freemem.freeMemMb);
+
+  const getEvenMemorySegments = (totalMemory: number): Array<number> => {
+    const segmentNumbers = [0];
+
+    for (let i = 0; i < 5; i++) {
+      const segmentNum = Math.round(totalMemory) / 5 * i;
+      segmentNumbers.push(Math.round(segmentNum));
+    }
+
+    segmentNumbers.push(Math.round(totalMemory));
+
+    return segmentNumbers;
+  }
+
+  const formatDuration = (time: number): string => {
+    const baseDate = new Date(1970, 1, 1);
+    baseDate.setSeconds(time);
+    console.log('Time: ', baseDate.toISOString());
+    const day = Number(baseDate.toISOString().substring(9, 10)) - 1;
+    return `${day}:${baseDate.toISOString().substring(11, 19)}`;
+  }
+
   return (
     <DataContainer>
       <ReactSpeedometer
@@ -32,13 +55,13 @@ const DataDisplay = ({ data }: Props): JSX.Element => {
       <Row>
         <p>{`CPU Model: ${data.cpu_platform}.`}</p>
         <p>{`CPU core count: ${data.core_count}.`}</p>
-        <p>{`Server uptime: ${data.uptime}.`}</p>
+        <p>{`Server uptime: ${formatDuration(data.uptime)}.`}</p>
       </Row>
       <ReactSpeedometer
         minValue={0}
-        maxValue={data.freemem?.totalMemMb}
-        value={data.freemem?.freeMemMb}
-        currentValueText={`RAM Usage: ${data.freemem?.freeMemMb}.`}
+        maxValue={Math.round(data.freemem.totalMemMb)}
+        value={memoryInUse}
+        currentValueText={`RAM Usage: ${memoryInUse} Mb in use.`}
       />
     </DataContainer>
   );

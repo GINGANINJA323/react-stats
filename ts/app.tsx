@@ -41,7 +41,16 @@ const Loading = styled.h2`
 `;
 
 const App = (): JSX.Element => {
-  const [ stats, setStats ] = React.useState<Stats>({});
+  const [ stats, setStats ] = React.useState<Stats>({
+    cpu_platform: '',
+    core_count: 0,
+    freemem: {
+      totalMemMb: 0,
+      freeMemMb: 0
+    },
+    uptime: 0,
+    usage: 0
+  });
 
   const getStats = async() => {
     const response = await fetch('http://localhost:3000/get_stats');
@@ -67,12 +76,12 @@ const App = (): JSX.Element => {
         <h1>{'Welcome to React Stats!'}</h1>
       </HeaderRow>
       {
-        Object.keys(stats).length ?
+        stats.cpu_platform.length ?
           <DataDisplay data={stats} /> : <Loading>Content Loading...</Loading>
       }
       <FooterRow>
         <p>Created using <a target="_blank" rel="noopener noreferrer" href="https://reactjs.org/">ReactJS</a> and <a target="_blank" rel="noopener noreferrer" href="https://www.typescriptlang.org/">TypeScript</a>.</p>
-        <p>Wanna see the code? My repo's <a target="_blank" rel="noopener noreferrer" href="https://github.com/GINGANINJA323/react-stats">here</a>.</p>
+        <p>Wanna see the code? Here's my <a target="_blank" rel="noopener noreferrer" href="https://github.com/GINGANINJA323/react-stats">repo</a>.</p>
       </FooterRow>
     </ContainerDiv>
   );
