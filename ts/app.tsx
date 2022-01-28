@@ -63,7 +63,7 @@ const App = (): JSX.Element => {
       console.log('Error fetching stats');
     }
 
-    setTimeout(() => getStats(), 60000);
+    setTimeout(() => getStats(), 3000);
   }
 
   React.useEffect(() => {
