@@ -37,11 +37,27 @@ const DataDisplay = ({ data }: Props): JSX.Element => {
   }
 
   const formatDuration = (time: number): string => {
-    const baseDate = new Date(1970, 1, 1);
-    baseDate.setSeconds(time);
-    console.log('Time: ', baseDate.toISOString());
-    const day = Number(baseDate.toISOString().substring(9, 10)) - 1;
-    return `${day}:${baseDate.toISOString().substring(11, 19)}`;
+    // from https://www.codegrepper.com/code-examples/javascript/convert+seconds+to+hours+minutes+seconds+javascript
+    const hours   = Math.floor(time / 3600); // get hours
+    const minutes = Math.floor((time - (hours * 3600)) / 60);
+    const seconds = time - (hours * 3600) - (minutes * 60);
+
+    const timeStrings = {
+      hoursString: `${hours}`,
+      minutesString: `${minutes}`,
+      secondsString: `${seconds}`
+    }
+
+    if (hours < 10) {
+      timeStrings.hoursString = `0${hours}`;
+    }
+    if (minutes < 10) {
+      timeStrings.minutesString = `0${minutes}`;
+    }
+    if (seconds < 10) {
+      timeStrings.secondsString = `0${seconds}`;
+    }
+    return `${timeStrings.hoursString}:${timeStrings.minutesString}:${timeStrings.secondsString}`;
   }
 
   return (
