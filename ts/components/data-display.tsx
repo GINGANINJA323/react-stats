@@ -81,6 +81,17 @@ const DataDisplay = ({ data }: Props): JSX.Element => {
           <p>{`Disk usage: ${data.freedisk.usedPercentage}% used (${data.freedisk.freeGb}/${data.freedisk.totalGb} free).`}</p>
           : null
         }
+        {
+          data.temps.status && data.temps.tempAvg ? 
+          <>
+            <p>{`CPU Temperature: ${data.temps.tempAvg}.`}</p>
+            {
+              data.temps.tempCores.map((t, i) => (
+                <p key={i}>{`CPU Core ${i+1} Temperature: ${t}.`}</p>
+              ))
+            }
+          </> : null
+        }
       </Row>
       {
         data.freemem.status ?

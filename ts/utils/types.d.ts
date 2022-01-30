@@ -17,4 +17,16 @@ export interface Stats {
     usedPercentage: number;
     freePercentage: number;
   };
-}
+  temps: {
+    status: boolean;
+    tempAvg: number;
+    tempCores: Array<number>;
+  };
+};
+
+export interface HistoricStats {
+  timestamp: number;
+  usage: number;
+  ramUsage: number;
+  diskUsage?: number;
+};

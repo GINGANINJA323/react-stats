@@ -1,8 +1,33 @@
+const fs = require('fs');
+const si = require('systeminformation');
 const osu = require('node-os-utils');
 const cpu = osu.cpu;
 const ram = osu.mem;
 const os = osu.os;
 const disk = osu.drive;
+
+const appendStats = async(stats) => {
+  try {
+    if (!fs.existsSync('./stats.json')) { // If no stats file, make one.
+      const firstStats = JSON.stringify([stats]);
+      fs.writeFileSync('./stats.json', firstStats);
+      return;
+    }
+
+    const retrievedStats = fs.readFileSync('./stats.json', { encoding: 'utf-8' });
+    const statsJson = JSON.parse(retrievedStats);
+    const lastRecord = statsJson[statsJson.length - 1];
+
+    if (lastRecord.timestamp > new Date().getSeconds() - 3600) {
+      return; // Should have roughly every hour.
+    }
+
+    fs.appendFileSync('./stats.json', JSON.stringify(stats));
+  } catch (err) {
+    console.log(err);
+    return;
+  }
+}
 
 const getStats = async() => {
   const stats = {};
@@ -10,8 +35,6 @@ const getStats = async() => {
   stats.cpu_platform = cpu.model();
   stats.core_count = cpu.count();
   stats.uptime = os.uptime();
-
-  // const promises = [disk.info(), cpu.usage(), ram.free()];
 
   await cpu.usage()
     .then((usage) => stats.usage = usage)
@@ -42,9 +65,51 @@ const getStats = async() => {
       freePercentage: 0
     });
 
+  await si.cpuTemperature()
+    .then((data) => {
+      stats.temps = {
+        status: true,
+        tempAvg: data.main,
+        tempCores: data.cores
+      }
+    })
+    .catch(() => {
+      stats.temps = {
+        status: false,
+        tempAvg: 0,
+        tempCores: [0]
+      }
+    });
+
+  const recordStats = {
+    timestamp: new Date().getSeconds(),
+    usage: stats.usage || 0,
+    ramUsage: stats.freemem.totalMemMb - stats.freemem.freeMemMb || 0,
+    diskUsage: stats.freedisk.usedGb || 0
+  }
+
+  appendStats(recordStats);
+
   return stats;
 }
 
+const getHistoricStats = async() => {
+  try {
+    if (!fs.existsSync('./stats.json')) {
+      throw new Error('Stats file is not available');
+    }
+
+    const stats = fs.readFileSync('./stats.json');
+    const statsJson = JSON.parse(stats);
+
+    return statsJson;
+  } catch (err) {
+    console.log(err);
+    return {};
+  }
+}
+
 module.exports = {
-  getStats
+  getStats,
+  getHistoricStats
 }
