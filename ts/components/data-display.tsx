@@ -62,23 +62,35 @@ const DataDisplay = ({ data }: Props): JSX.Element => {
 
   return (
     <DataContainer>
-      <ReactSpeedometer
-        minValue={0}
-        maxValue={100}
-        value={data.usage}
-        currentValueText={`CPU Usage: ${data.usage}%`}
-      />
+      {
+        typeof data.usage === 'number' ?
+          <ReactSpeedometer
+            minValue={0}
+            maxValue={100}
+            value={data.usage}
+            currentValueText={`CPU Usage: ${data.usage}%`}
+          /> :
+          <p>{data.usage}</p>
+      }
       <Row>
         <p>{`CPU Model: ${data.cpu_platform}.`}</p>
         <p>{`CPU core count: ${data.core_count}.`}</p>
         <p>{`Server uptime: ${formatDuration(data.uptime)}.`}</p>
+        {
+          data.freedisk.status ?
+          <p>{`Disk usage: ${data.freedisk.usedPercentage}% used (${data.freedisk.freeGb}/${data.freedisk.totalGb} free).`}</p>
+          : null
+        }
       </Row>
-      <ReactSpeedometer
-        minValue={0}
-        maxValue={Math.round(data.freemem.totalMemMb)}
-        value={memoryInUse}
-        currentValueText={`RAM Usage: ${memoryInUse} Mb in use.`}
-      />
+      {
+        data.freemem.status ?
+          <ReactSpeedometer
+            minValue={0}
+            maxValue={Math.round(data.freemem.totalMemMb)}
+            value={memoryInUse}
+            currentValueText={`RAM Usage: ${memoryInUse} Mb in use.`}
+          /> : null
+      }
     </DataContainer>
   );
 }

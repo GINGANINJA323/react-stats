@@ -45,11 +45,20 @@ const App = (): JSX.Element => {
     cpu_platform: '',
     core_count: 0,
     freemem: {
+      status: false,
       totalMemMb: 0,
       freeMemMb: 0
     },
     uptime: 0,
-    usage: 0
+    usage: 0,
+    freedisk: {
+      status: false,
+      totalGb: 0,
+      freeGb: 0,
+      usedGb: 0,
+      usedPercentage: 0,
+      freePercentage: 0
+    }
   });
 
   const getStats = async() => {
@@ -63,7 +72,7 @@ const App = (): JSX.Element => {
       console.log('Error fetching stats');
     }
 
-    setTimeout(() => getStats(), 60000);
+    setTimeout(() => getStats(), 3000);
   }
 
   React.useEffect(() => {
