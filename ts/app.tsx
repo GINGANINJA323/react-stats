@@ -1,7 +1,12 @@
 import * as React from 'react';
 import DataDisplay from './components/data-display';
 import styled from 'styled-components';
-import type { Stats } from './utils/types';
+import { Line } from 'react-chartjs-2';
+import { Chart, registerables } from 'chart.js';
+
+import type { Stats, HistoricStats } from './utils/types';
+
+Chart.register(...registerables);
 
 const ContainerDiv = styled.div`
   display: grid;
@@ -40,17 +45,45 @@ const Loading = styled.h2`
   grid-column: 2;
 `;
 
+const ChartRow = styled.div`
+  display: flex;
+  grid-row: 3;
+  grid-column: 2;
+  flex-direction: row;
+  justify-content: space-evenly;
+`;
+
+const ChartContainer = styled.div`
+  min-width: 0;
+`;
+
 const App = (): JSX.Element => {
   const [ stats, setStats ] = React.useState<Stats>({
     cpu_platform: '',
     core_count: 0,
     freemem: {
+      status: false,
       totalMemMb: 0,
       freeMemMb: 0
     },
     uptime: 0,
-    usage: 0
+    usage: 0,
+    freedisk: {
+      status: false,
+      totalGb: 0,
+      freeGb: 0,
+      usedGb: 0,
+      usedPercentage: 0,
+      freePercentage: 0
+    },
+    temps: {
+      status: false,
+      tempAvg: 0,
+      tempCores: [0]
+    }
   });
+
+  const [history, setHistory] = React.useState<Array<HistoricStats>>([]);
 
   const getStats = async() => {
     const response = await fetch('http://localhost:3000/get_stats');
@@ -66,8 +99,23 @@ const App = (): JSX.Element => {
     setTimeout(() => getStats(), 3000);
   }
 
+  const getHistoricStats = async() => {
+    const response = await fetch('http://localhost:3000/get_history');
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('History: ', data);
+      setHistory(data);
+    } else {
+      console.log('Error fetching historic stats');
+    }
+
+    setTimeout(() => getHistoricStats(), 60000 * 60);
+  }
+
   React.useEffect(() => {
     getStats();
+    getHistoricStats();
   }, []);
 
   return (
@@ -78,6 +126,50 @@ const App = (): JSX.Element => {
       {
         stats.cpu_platform.length ?
           <DataDisplay data={stats} /> : <Loading>Content Loading...</Loading>
+      }
+      {
+        history.length ? 
+          <ChartRow>
+            <ChartContainer>
+              <Line
+                data={{
+                  labels: ['CPU Usage'],
+                  datasets: [
+                    {
+                      label: '',
+                      data: history.map(d => d.usage)
+                    }
+                  ]
+                }}
+              />
+            </ChartContainer>
+            <ChartContainer>
+              <Line
+                data={{
+                  labels: ['RAM Usage'],
+                  datasets: [
+                    {
+                      label: '',
+                      data: history.map(d => d.ramUsage)
+                    }
+                  ]
+                }}
+              />
+            </ChartContainer>
+            <ChartContainer>
+              <Line
+                data={{
+                  labels: ['Disk Usage'],
+                  datasets: [
+                    {
+                      label: '',
+                      data: history.map(d => d.diskUsage)
+                    }
+                  ]
+                }}
+              />
+            </ChartContainer>
+          </ChartRow> : null
       }
       <FooterRow>
         <p>Created using <a target="_blank" rel="noopener noreferrer" href="https://reactjs.org/">ReactJS</a> and <a target="_blank" rel="noopener noreferrer" href="https://www.typescriptlang.org/">TypeScript</a>.</p>

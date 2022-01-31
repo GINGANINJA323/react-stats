@@ -14,4 +14,10 @@ server.get('/get_stats', async(_req, res) => {
   res.json(data);
 });
 
+server.get('/get_history', async(_req, res) => {
+  const data = await api.getHistoricStats();
+  console.log('History: ', data);
+  res.json(data);
+});
+
 server.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
