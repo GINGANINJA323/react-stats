@@ -18,9 +18,9 @@ const appendStats = async(stats) => {
     const statsJson = JSON.parse(retrievedStats);
     const lastRecord = statsJson[statsJson.length - 1];
 
-    // if (lastRecord.timestamp > new Date().getSeconds() - 3600) {
-    //   return; // Should have roughly every hour.
-    // }
+    if (lastRecord.timestamp > new Date().getSeconds() - 3600) {
+      return; // Should have roughly every hour.
+    }
 
     const newStats = JSON.stringify([...statsJson, stats]);
 

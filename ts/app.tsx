@@ -115,6 +115,9 @@ const App = (): JSX.Element => {
 
   React.useEffect(() => {
     getStats();
+  }, []);
+
+  React.useEffect(() => {
     getHistoricStats();
   }, []);
 
