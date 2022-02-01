@@ -3,6 +3,7 @@ import DataDisplay from './components/data-display';
 import styled from 'styled-components';
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
+import * as config from '../config.json';
 
 import type { Stats, HistoricStats } from './utils/types';
 
@@ -86,7 +87,7 @@ const App = (): JSX.Element => {
   const [history, setHistory] = React.useState<Array<HistoricStats>>([]);
 
   const getStats = async() => {
-    const response = await fetch('http://localhost:3000/get_stats');
+    const response = await fetch(`http://${config.DOMAIN}:${config.PORT}/get_stats`);
 
     if (response.ok) {
       const data = await response.json();
@@ -100,7 +101,7 @@ const App = (): JSX.Element => {
   }
 
   const getHistoricStats = async() => {
-    const response = await fetch('http://localhost:3000/get_history');
+    const response = await fetch(`http://${config.DOMAIN}:${config.PORT}/get_history`);
 
     if (response.ok) {
       const data = await response.json();

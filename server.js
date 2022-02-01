@@ -1,11 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const api = require('./api');
-require('dotenv').config();
+const { DOMAIN, PORT } = require('./config.json');
 const server = express();
-
-const PORT = 3000;
-const DOMAIN = process.env.IP_ADDR || 'localhost';
 
 server.use(cors()); // Fix CORS error denying access to API responses.
 

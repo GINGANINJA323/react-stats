@@ -8,15 +8,18 @@ This is a simple, single page ReactJS app to show statistics from the web server
 
 1. Clone the repo.
 2. Run `npm install` to get the required node modules.
-3. Run `npm run ts` to run the TypeScript compiler. This will create a `src` folder containing the compiled JS.
-4. Run `npm start` to start the dev server, and `npm run start:server` to start the backend service.
-5. Go to [localhost:8080](#http://localhost:8080/) to see the site!
+3. Create a JSON file in the project root called `config.json` and see the [Config](#config) section.
+4. Run `npm run ts` to run the TypeScript compiler. This will create a `src` folder containing the compiled JS.
+5. Run `npm start` to start the dev server, and `npm run start:server` to start the backend service.
+6. Go to [localhost:8080](#http://localhost:8080/) to see the site!
 
 When making changes, make them in the `.tsx` files, and run `npm run ts` to update JS. This will trigger the dev server to reload.
 
-### Environment
+### Config
+The config file needs 2 keys:
 
-At the moment, the domain is defined by an the environment variable `IP_ADDR`. It defaults to `localhost`, but can be overridden for production.
+1. `DOMAIN` - `string` specifying the desired domain. Default is `localhost`.
+2. `PORT` - `number` specifying the desired port. Default is `3000`.
 
 ### Production
 
