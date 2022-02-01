@@ -14,6 +14,10 @@ This is a simple, single page ReactJS app to show statistics from the web server
 
 When making changes, make them in the `.tsx` files, and run `npm run ts` to update JS. This will trigger the dev server to reload.
 
+### Environment
+
+At the moment, the domain is defined by an the environment variable `IP_ADDR`. It defaults to `localhost`, but can be overridden for production.
+
 ### Production
 
 Same as above, but instead of steps 4 and 5, use `npm run build` to compile the JS into a bundle.
