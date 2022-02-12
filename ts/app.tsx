@@ -3,6 +3,8 @@ import DataDisplay from './components/data-display';
 import styled from 'styled-components';
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
+// Next line is TS ignored as importing the config messes up the src directory, and subsequently the builds.
+// @ts-ignore
 import * as config from '../config.json';
 
 import type { Stats, HistoricStats } from './utils/types';

@@ -7,7 +7,7 @@
     "start": "webpack serve --open --config webpack.dev.js --hot",
     "build": "webpack --config webpack.prod.js",
     "start:server": "nodemon server.js --config nodemon.json",
-    "ts": "npx tsc --jsx react --resolveJsonModule",
+    "ts": "npx tsc --jsx react",
     "test": "jest"
   },
   "author": "Edward Glendinning",
