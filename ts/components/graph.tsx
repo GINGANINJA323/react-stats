@@ -3,6 +3,7 @@ import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import styled from 'styled-components';
 import type { HistoricStats } from '../utils/types';
+import { formatDate } from '../utils/utils';
 
 Chart.register(...registerables);
 
@@ -56,7 +57,7 @@ const Graph = (props: Props) => {
     <ChartContainer>
       <Line
         data={{
-          labels: props.history.map(d => d.timestamp),
+          labels: props.history.map(d => formatDate(d.timestamp)),
           datasets: [
             {
               data: props.history.map(d => d[props.dataKey as keyof HistoricStats])

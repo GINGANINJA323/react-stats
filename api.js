@@ -18,7 +18,7 @@ const appendStats = async(stats) => {
     const statsJson = JSON.parse(retrievedStats);
     const lastRecord = statsJson[statsJson.length - 1];
 
-    if (lastRecord.timestamp > new Date().getSeconds() - 3600) {
+    if (lastRecord.timestamp > new Date().getTime() - 60000 * 60) {
       return; // Should have roughly every hour.
     }
 
@@ -82,9 +82,11 @@ const getStats = async() => {
         tempCores: [0]
       }
     });
+  
+  const serverTime = new Date();
 
   const recordStats = {
-    timestamp: new Date().getSeconds(),
+    timestamp: serverTime.getTime(),
     usage: stats.usage || 0,
     ramUsage: stats.freemem.totalMemMb - stats.freemem.freeMemMb || 0,
     diskUsage: stats.freedisk.usedGb || 0
