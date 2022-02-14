@@ -14,6 +14,7 @@ interface Props {
 
 const ChartContainer = styled.div`
   min-width: 0;
+  width: 35%;
 `;
 
 const Graph = (props: Props) => {
