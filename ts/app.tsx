@@ -1,13 +1,13 @@
 import * as React from 'react';
 import DataDisplay from './components/data-display';
 import styled from 'styled-components';
-import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 // Next line is TS ignored as importing the config messes up the src directory, and subsequently the builds.
 // @ts-ignore
 import * as config from '../config.json';
 
 import type { Stats, HistoricStats } from './utils/types';
+import Graph from './components/graph';
 
 Chart.register(...registerables);
 
@@ -54,10 +54,6 @@ const ChartRow = styled.div`
   grid-column: 2;
   flex-direction: row;
   justify-content: space-evenly;
-`;
-
-const ChartContainer = styled.div`
-  min-width: 0;
 `;
 
 const App = (): JSX.Element => {
@@ -136,45 +132,21 @@ const App = (): JSX.Element => {
       {
         history.length ? 
           <ChartRow>
-            <ChartContainer>
-              <Line
-                data={{
-                  labels: ['CPU Usage'],
-                  datasets: [
-                    {
-                      label: '',
-                      data: history.map(d => d.usage)
-                    }
-                  ]
-                }}
-              />
-            </ChartContainer>
-            <ChartContainer>
-              <Line
-                data={{
-                  labels: ['RAM Usage'],
-                  datasets: [
-                    {
-                      label: '',
-                      data: history.map(d => d.ramUsage)
-                    }
-                  ]
-                }}
-              />
-            </ChartContainer>
-            <ChartContainer>
-              <Line
-                data={{
-                  labels: ['Disk Usage'],
-                  datasets: [
-                    {
-                      label: '',
-                      data: history.map(d => d.diskUsage)
-                    }
-                  ]
-                }}
-              />
-            </ChartContainer>
+            <Graph
+              title={'CPU Usage'}
+              history={history}
+              dataKey={'usage'}
+            />
+            <Graph
+              title={'RAM Usage'}
+              history={history}
+              dataKey={'ramUsage'}
+            />
+            <Graph
+              title={'Disk Usage'}
+              history={history}
+              dataKey={'diskUsage'}
+            />
           </ChartRow> : null
       }
       <FooterRow>
