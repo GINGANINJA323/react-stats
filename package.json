@@ -6,7 +6,7 @@
   "scripts": {
     "start:ui": "webpack serve --open --config webpack.dev.js --hot",
     "build": "npm run ts && webpack --config webpack.prod.js",
-    "start": "nodemon server.js --config nodemon.json",
+    "start": "nodemon server.js --config nodemon.json --watch",
     "ts": "npx tsc --jsx react",
     "test": "jest"
   },
