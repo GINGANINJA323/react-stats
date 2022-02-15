@@ -85,7 +85,7 @@ const App = (): JSX.Element => {
   const [history, setHistory] = React.useState<Array<HistoricStats>>([]);
 
   const getStats = async() => {
-    const response = await fetch(`http://${config.DOMAIN}:${config.PORT}/get_stats`);
+    const response = await fetch(`http://${config.DOMAIN}:${config.PORT}/api/get_stats`);
 
     if (response.ok) {
       const data = await response.json();
@@ -99,7 +99,7 @@ const App = (): JSX.Element => {
   }
 
   const getHistoricStats = async() => {
-    const response = await fetch(`http://${config.DOMAIN}:${config.PORT}/get_history`);
+    const response = await fetch(`http://${config.DOMAIN}:${config.PORT}/api/get_history`);
 
     if (response.ok) {
       const data = await response.json();
