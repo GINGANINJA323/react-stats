@@ -109,7 +109,7 @@ const App = (): JSX.Element => {
       console.log('Error fetching historic stats');
     }
 
-    setTimeout(() => getHistoricStats(), 60000 * 60);
+    setTimeout(() => getHistoricStats(), 60 * 1000);
   }
 
   React.useEffect(() => {

@@ -6,31 +6,6 @@ const ram = osu.mem;
 const os = osu.os;
 const disk = osu.drive;
 
-const appendStats = async(stats) => {
-  try {
-    if (!fs.existsSync('./stats.json')) { // If no stats file, make one.
-      const firstStats = JSON.stringify([stats]);
-      fs.writeFileSync('./stats.json', firstStats);
-      return;
-    }
-
-    const retrievedStats = fs.readFileSync('./stats.json', { encoding: 'utf-8' });
-    const statsJson = JSON.parse(retrievedStats);
-    const lastRecord = statsJson[statsJson.length - 1];
-
-    if (lastRecord.timestamp > new Date().getTime() - 60000 * 60) {
-      return; // Should have roughly every hour.
-    }
-
-    const newStats = JSON.stringify([...statsJson, stats]);
-
-    fs.writeFileSync('./stats.json', newStats);
-  } catch (err) {
-    console.log(err);
-    return;
-  }
-}
-
 const getStats = async() => {
   const stats = {};
 
@@ -82,19 +57,39 @@ const getStats = async() => {
         tempCores: [0]
       }
     });
-  
-  const serverTime = new Date();
-
-  const recordStats = {
-    timestamp: serverTime.getTime(),
-    usage: stats.usage || 0,
-    ramUsage: stats.freemem.totalMemMb - stats.freemem.freeMemMb || 0,
-    diskUsage: stats.freedisk.usedGb || 0
-  }
-
-  appendStats(recordStats);
 
   return stats;
+}
+
+const appendStats = async() => {
+  try {
+    const newStats = await getStats();
+
+    const serverTime = new Date();
+
+    const recordStats = {
+      timestamp: serverTime.getTime(),
+      usage: newStats.usage || 0,
+      ramUsage: newStats.freemem.totalMemMb - newStats.freemem.freeMemMb || 0,
+      diskUsage: newStats.freedisk.usedGb || 0
+    }
+
+    if (!fs.existsSync('./stats.json')) { // If no stats file, make one.
+      const firstStats = JSON.stringify([recordStats]);
+      fs.writeFileSync('./stats.json', firstStats);
+      return;
+    }
+
+    const retrievedStats = fs.readFileSync('./stats.json', { encoding: 'utf-8' });
+    const statsJson = JSON.parse(retrievedStats);
+
+    const appendedStats = JSON.stringify([...statsJson, recordStats]);
+
+    fs.writeFileSync('./stats.json', appendedStats);
+  } catch (err) {
+    console.log(err);
+    return;
+  }
 }
 
 const getHistoricStats = async() => {
@@ -112,6 +107,9 @@ const getHistoricStats = async() => {
     return {};
   }
 }
+
+appendStats();
+setTimeout(appendStats, 60 * 1000); // Call appendStats once every hour to record stats. Handled using server instead fof client.
 
 module.exports = {
   getStats,
