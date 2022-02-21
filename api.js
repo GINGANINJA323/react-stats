@@ -90,7 +90,7 @@ const appendStats = async() => {
     console.log(err);
   }
 
-  setTimeout(appendStats, 60000);
+  setTimeout(appendStats, 60 * 60000);
 }
 
 const getHistoricStats = async() => {
