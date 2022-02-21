@@ -88,8 +88,9 @@ const appendStats = async() => {
     fs.writeFileSync('./stats.json', appendedStats);
   } catch (err) {
     console.log(err);
-    return;
   }
+
+  setTimeout(appendStats, 60000);
 }
 
 const getHistoricStats = async() => {
@@ -109,7 +110,6 @@ const getHistoricStats = async() => {
 }
 
 appendStats();
-setTimeout(appendStats, 60000); // Call appendStats once every hour to record stats. Handled using server instead fof client.
 
 module.exports = {
   getStats,
