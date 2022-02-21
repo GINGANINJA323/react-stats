@@ -2,9 +2,6 @@ import * as React from 'react';
 import DataDisplay from './components/data-display';
 import styled from 'styled-components';
 import { Chart, registerables } from 'chart.js';
-// Next line is TS ignored as importing the config messes up the src directory, and subsequently the builds.
-// @ts-ignore
-import * as config from '../config.json';
 
 import type { Stats, HistoricStats } from './utils/types';
 import Graph from './components/graph';
@@ -83,9 +80,10 @@ const App = (): JSX.Element => {
   });
 
   const [history, setHistory] = React.useState<Array<HistoricStats>>([]);
+  const baseUrl = window.location.origin;
 
   const getStats = async() => {
-    const response = await fetch(`http://${config.DOMAIN}:${config.PORT}/api/get_stats`);
+    const response = await fetch(`${baseUrl}/api/get_stats`);
 
     if (response.ok) {
       const data = await response.json();
@@ -99,7 +97,7 @@ const App = (): JSX.Element => {
   }
 
   const getHistoricStats = async() => {
-    const response = await fetch(`http://${config.DOMAIN}:${config.PORT}/api/get_history`);
+    const response = await fetch(`${baseUrl}/api/get_history`);
 
     if (response.ok) {
       const data = await response.json();
@@ -109,7 +107,7 @@ const App = (): JSX.Element => {
       console.log('Error fetching historic stats');
     }
 
-    setTimeout(() => getHistoricStats(), 60 * 1000);
+    setTimeout(() => getHistoricStats(), 60000);
   }
 
   React.useEffect(() => {
@@ -123,7 +121,7 @@ const App = (): JSX.Element => {
   return (
     <ContainerDiv>
       <HeaderRow>
-        <h1>{'Welcome to React Stats!'}</h1>
+        <h1>{'React Server Statistics'}</h1>
       </HeaderRow>
       {
         stats.cpu_platform.length ?

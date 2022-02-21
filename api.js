@@ -109,7 +109,7 @@ const getHistoricStats = async() => {
 }
 
 appendStats();
-setTimeout(appendStats, 60 * 1000); // Call appendStats once every hour to record stats. Handled using server instead fof client.
+setTimeout(appendStats, 60000); // Call appendStats once every hour to record stats. Handled using server instead fof client.
 
 module.exports = {
   getStats,
