@@ -23,16 +23,23 @@ const Row = styled.div`
 const DataDisplay = ({ data }: Props): JSX.Element => {
   const memoryInUse = Math.round(data.freemem.totalMemMb) - Math.round(data.freemem.freeMemMb);
 
+  const speedoColours = [
+    '#6ad72d',
+    '#aee228',
+    '#ecdb23',
+    '#f6961e',
+    '#ff471a'
+  ];
+
   const formatDuration = (time: number): string => {
-    // from https://www.codegrepper.com/code-examples/javascript/convert+seconds+to+hours+minutes+seconds+javascript
-    const hours   = Math.floor(time / 3600); // get hours
+    const hours   = Math.floor(time / 3600);
     const minutes = Math.floor((time - (hours * 3600)) / 60);
     const seconds = time - (hours * 3600) - (minutes * 60);
 
     const timeStrings = {
       hoursString: `${hours}`,
       minutesString: `${minutes}`,
-      secondsString: `${seconds}`
+      secondsString: `${Math.floor(seconds)}`
     }
 
     if (hours < 10) {
@@ -56,6 +63,7 @@ const DataDisplay = ({ data }: Props): JSX.Element => {
             maxValue={100}
             value={data.usage}
             currentValueText={`CPU Usage: ${data.usage}%`}
+            segmentColors={speedoColours}
           /> :
           <p>{data.usage}</p>
       }
@@ -87,6 +95,7 @@ const DataDisplay = ({ data }: Props): JSX.Element => {
             maxValue={Math.round(data.freemem.totalMemMb)}
             value={memoryInUse}
             currentValueText={`RAM Usage: ${memoryInUse} Mb in use.`}
+            segmentColors={speedoColours}
           /> : null
       }
     </DataContainer>
