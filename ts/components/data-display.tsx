@@ -70,19 +70,19 @@ const DataDisplay = ({ data }: Props): JSX.Element => {
       <Row>
         <p>{`CPU Model: ${data.cpu_platform}.`}</p>
         <p>{`CPU core count: ${data.core_count}.`}</p>
-        <p>{`Server uptime: ${formatDuration(data.uptime)}.`}</p>
+        <p>{`Server uptime: ${formatDuration(data.uptime)} (HH:MM:SS).`}</p>
         {
           data.freedisk.status ?
-          <p>{`Disk usage: ${data.freedisk.usedPercentage}% used (${data.freedisk.freeGb}/${data.freedisk.totalGb} free).`}</p>
+          <p>{`Disk usage: ${data.freedisk.usedPercentage}% used (${data.freedisk.freeGb}Gb/${data.freedisk.totalGb}Gb free).`}</p>
           : null
         }
         {
           data.temps.status && data.temps.tempAvg ? 
           <>
-            <p>{`CPU Temperature: ${data.temps.tempAvg}.`}</p>
+            <p>{`CPU Temperature: ${data.temps.tempAvg}°C.`}</p>
             {
               data.temps.tempCores.map((t, i) => (
-                <p key={i}>{`CPU Core ${i+1} Temperature: ${t}.`}</p>
+                <p key={i}>{`CPU Core ${i+1} Temperature: ${t}°C.`}</p>
               ))
             }
           </> : null
