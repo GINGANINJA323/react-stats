@@ -8,6 +8,10 @@ import Graph from './components/graph';
 
 Chart.register(...registerables);
 
+interface ConnectionLightProps {
+  display: boolean
+};
+
 const ContainerDiv = styled.div`
   display: grid;
   width: 100%;
@@ -22,6 +26,13 @@ const ContainerDiv = styled.div`
     font-family: 'Titillium Web', sans-serif;
     font-weight: 600;
   }
+`;
+
+const ConnectionLight = styled.img<ConnectionLightProps>`
+  width: 24px;
+  height: 20px;
+  margin-left: 10px;
+  display: ${(props) => props.display ? 'true' : 'none'};
 `;
 
 const HeaderRow = styled.div`
@@ -79,33 +90,30 @@ const App = (): JSX.Element => {
     }
   });
 
+  const [connected, setConnected] = React.useState(false);
   const [history, setHistory] = React.useState<Array<HistoricStats>>([]);
   const baseUrl = window.location.origin;
 
   const getStats = async() => {
-    const response = await fetch(`${baseUrl}/api/get_stats`);
-
-    if (response.ok) {
-      const data = await response.json();
-      console.log('Stats: ', data);
-      setStats(data);
-    } else {
-      console.log('Error fetching stats');
-    }
+    await fetch(`${baseUrl}/api/get_stats`)
+      .then((response) => response.json())
+      .then((data) => {
+        setStats(data);
+        setConnected(true);
+      })
+      .catch(() => setConnected(false));
 
     setTimeout(() => getStats(), 3000);
   }
 
   const getHistoricStats = async() => {
-    const response = await fetch(`${baseUrl}/api/get_history`);
-
-    if (response.ok) {
-      const data = await response.json();
-      console.log('History: ', data);
-      setHistory(data);
-    } else {
-      console.log('Error fetching historic stats');
-    }
+    await fetch(`${baseUrl}/api/get_history`)
+      .then((response) => response.json())
+      .then((data) => {
+        setHistory(data);
+        setConnected(true);
+      })
+      .catch(() => setConnected(false));
 
     setTimeout(() => getHistoricStats(), 60000);
   }
@@ -121,7 +129,11 @@ const App = (): JSX.Element => {
   return (
     <ContainerDiv>
       <HeaderRow>
-        <h1>{'React Server Statistics'}</h1>
+        <h1>
+          {'React Server Statistics'}
+          <ConnectionLight display={connected} src={'./greenLight.png'} title={'Last request was successful, server is connected.'} />
+          <ConnectionLight display={!connected} src={'./redLight.png'} title={'Last request failed, server connection cannot be guaranteed.'} />
+        </h1>
       </HeaderRow>
       {
         stats.cpu_platform.length ?
