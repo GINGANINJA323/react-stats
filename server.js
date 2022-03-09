@@ -11,13 +11,11 @@ server.use(express.static('public'));
 
 server.get('/api/get_stats', async(_req, res) => {
   const data = await api.getStats();
-  console.log('API returned: ', data);
   res.json(data);
 });
 
 server.get('/api/get_history', async(_req, res) => {
   const data = await api.getHistoricStats();
-  console.log('History: ', data);
   res.json(data);
 });
 
