@@ -100,7 +100,11 @@ const getHistoricStats = async() => {
     }
 
     const stats = fs.readFileSync('./stats.json');
-    const statsJson = JSON.parse(stats);
+    let statsJson = JSON.parse(stats);
+
+    if (statsJson && statsJson.length > 168) {
+      statsJson = statsJson.slice(statsJson.length - 168); // Get only 168 latest entries, one week's worth.
+    }
 
     return statsJson;
   } catch (err) {
