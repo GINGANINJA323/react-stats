@@ -153,9 +153,9 @@ const App = (): JSX.Element => {
               dataKey={'ramUsage'}
             />
             <Graph
-              title={'Disk Usage'}
+              title={'CPU Temperature'}
               history={history}
-              dataKey={'diskUsage'}
+              dataKey={'temp'}
             />
           </ChartRow> : null
       }

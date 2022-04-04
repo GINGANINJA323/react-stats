@@ -71,7 +71,8 @@ const appendStats = async() => {
       timestamp: serverTime.getTime(),
       usage: newStats.usage || 0,
       ramUsage: newStats.freemem.totalMemMb - newStats.freemem.freeMemMb || 0,
-      diskUsage: newStats.freedisk.usedGb || 0
+      diskUsage: newStats.freedisk.usedGb || 0,
+      temp: newStats.temps.tempAvg
     }
 
     if (!fs.existsSync('./stats.json')) { // If no stats file, make one.
