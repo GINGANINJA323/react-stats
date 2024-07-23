@@ -2,15 +2,18 @@ const path = require("path");
 const webpack = require("webpack");
 
 module.exports = {
-  entry: "./index.js",
+  entry: "./index.tsx",
   mode: "development",
+  devServer: {
+    hot: true
+  },
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         exclude: /(node_modules)/,
         loader: "babel-loader",
-        options: { presets: ["@babel/env"] }
+        options: { presets: ["@babel/env", "@babel/preset-react", "@babel/preset-typescript"] }
       },
       {
         test: /\.css$/,
@@ -18,13 +21,10 @@ module.exports = {
       }
     ]
   },
-  resolve: { extensions: ["*", ".js", ".jsx"] },
+  resolve: { extensions: [".*", ".js", ".jsx", ".ts", ".tsx"] },
   output: {
-    path: path.resolve(__dirname, "dist/"),
-    publicPath: "/dist/",
+    path: path.resolve(__dirname, "public/"),
+    publicPath: '/',
     filename: "bundle.js"
-  },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ]
+  }
 };

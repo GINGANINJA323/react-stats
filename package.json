@@ -4,10 +4,8 @@
   "description": "A React web app to display server statistics.",
   "main": "index.js",
   "scripts": {
-    "start:ui": "webpack serve --open --config webpack.dev.js --hot",
-    "build": "npm run ts && webpack --config webpack.prod.js",
-    "start": "nodemon server.js --config nodemon.json --watch",
-    "ts": "npx tsc --jsx react",
+    "build": "webpack --config webpack.prod.js",
+    "start": "DEV=true nodemon server.js --config nodemon.json",
     "test": "jest"
   },
   "author": "Edward Glendinning",
@@ -38,9 +36,12 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.16.10",
+    "@babel/preset-typescript": "^7.24.7",
     "@types/react": "^17.0.38",
+    "@types/react-dom": "^18.3.0",
     "@types/styled-components": "^5.1.21",
     "react-chartjs-2": "^4.0.1",
-    "react-d3-speedometer": "^1.0.1"
+    "react-d3-speedometer": "^1.0.1",
+    "webpack-dev-middleware": "^7.3.0"
   }
 }

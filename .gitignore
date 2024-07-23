@@ -3,3 +3,4 @@ dist
 src
 stats.json
 var.env
+public/bundle.*
